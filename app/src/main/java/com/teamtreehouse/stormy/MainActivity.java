@@ -23,10 +23,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String apiKey = "aa9f83f9dbf2f004fadd06d8c26925fc";
-        Double latitud = -34.603333;
-        Double longitud = -58.381667;
+        double latitude = -34.603333;
+        double longitude = -58.381667;
         String forecastUrl = "https://api.forecast.io/forecast/" + apiKey +
-                "/" + latitud + "," + longitud;
+                "/" + latitude + "," + longitude;
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -43,8 +43,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
+                    Log.v(TAG, response.body().string());
                     if(response.isSuccessful()) {
-                        Log.v(TAG, response.body().string());
+
+                    }
+                    else{
+                        alertUserAboutError();
+
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -54,8 +59,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Log.d(TAG,"Main UI code is running!");
+        Log.d(TAG, "Main UI code is running!");
 
+    }
+
+    private void alertUserAboutError() {
+        AlertDialogFragment dialog = new AlertDialogFragment();
+        dialog.show(getFragmentManager(),"error_dialog");
     }
 
 
